@@ -14,11 +14,18 @@ const app = express();
 dbConnection();
 
 
+//lectura y parseo del body de la request
+
+app.use(express.json())
+
+
+
 ///cors
 app.use(cors());
 //routes
 
-app.use('/api/ejemplo',require('./routes/ejemplo.routes'))
+app.use('/api/usuarios',require('./routes/usuarios.routes.js'))
+app.use('/api/auth',require('./routes/auth.routes.js'))
 
 
 
