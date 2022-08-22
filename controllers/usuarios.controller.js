@@ -6,15 +6,40 @@ const { generarJWT } = require("../helpers/jwt");
 
 
 const getUsuarios = async (req, res) => {
-  const usuarios = await Usuario.find({}, "nombre email role google").sort({
-    nombre: 1,
-  });
 
+  //manejo paginacion 
+  const desde = Number(req.query.desde) || 0;
+
+  
   try {
+    //listado de usuarios desde la base de datos,
+   /*  const usuarios = await Usuario.find({}, "nombre email role google")
+      .sort({
+        nombre: 1,
+      })
+      .skip(desde)
+      .limit(5);
+
+      const totalRegistros = await Usuario.count() */
+
+    const [usuarios,totalRegistros] =  await Promise.all([
+       
+       Usuario.find({}, "nombre email role google img")
+          .sort({
+            nombre: 1,
+          })
+          .skip(desde)
+          .limit(5),
+
+       Usuario.count(),
+      ]);
+
+    
     if (usuarios) {
       return res.status(200).json({
         ok: true,
         usuarios,
+        totalRegistros
       });
     }
   } catch (error) {

@@ -22,10 +22,20 @@ app.use(express.json())
 
 ///cors
 app.use(cors());
-//routes
+//routes principales
 
-app.use('/api/usuarios',require('./routes/usuarios.routes.js'))
-app.use('/api/auth',require('./routes/auth.routes.js'))
+app.use('/api/usuarios',require('./routes/usuarios.routes.js'));
+app.use('/api/hospitales',require('./routes/hospitales.routes.js'));
+app.use('/api/medicos',require('./routes/medicos.routes.js'));
+app.use('/api/auth',require('./routes/auth.routes.js'));
+
+//ruta query
+
+app.use('/api/todo',require('./routes/busquerdas.routes'))
+
+//ruta uploads archivos
+
+app.use('/api/upload',require('./routes/uploads.routes.js'))
 
 
 
