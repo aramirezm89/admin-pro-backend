@@ -49,23 +49,69 @@ const crearMedico = async (req, res) => {
   }
 };
 
-const actualizarMedico = (req, res) => {
-  const uid = req.params.id;
+const actualizarMedico = async (req, res) => {
+  const idMedico = req.params.id;
+  const uid = req.uid;//propiedad que su valor es seteado en el middleware de validarJWT()
 
-  res.json({
-    ok: true,
-    message: "PutMedico",
-    uid,
-  });
+  const {nombre,hospital}  = req.body;
+ try {
+  
+   const medicoDB = await Medico.findById(idMedico);
+
+   if(!medicoDB){
+    return res.status(404).json({
+      ok:false,
+      message:'Medico no encontrado'
+    })
+   }
+
+    const medicoActualizado = await Medico.findByIdAndUpdate(idMedico,req.body,{new:true});
+   res.json({
+     ok: true,
+     message: "Medico Actualizado",
+     medicoActualizado,
+   });
+ } catch (error) {
+  console.log(error);
+  res.status(500).json({
+    ok:false,
+    message:'Error inesperado'
+  })
+ }
+ 
 };
 
-const borrarMedico = (req, res) => {
-  const uid = req.params.id;
-  res.json({
-    ok: true,
-    message: "DeleteMedico",
-    uid,
-  });
+const borrarMedico = async (req, res) => {
+
+  const medicoId = req.params.id;
+ 
+ try {
+  const medicoDB = await Medico.findById(medicoId);
+
+  if(!medicoDB){
+    return res.status(404).json({
+      ok:false,
+      message:'Medico no encontrado'
+    })
+  }
+
+  await Medico.findByIdAndDelete(medicoId);
+
+  return res.json({
+    ok:true,
+    message:'Medico eliminado'
+  })
+
+  
+ } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok:false,
+      message:'Error inesperado'
+    })
+ }
+ 
+ 
 };
 
 

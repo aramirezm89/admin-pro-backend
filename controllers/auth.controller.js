@@ -19,7 +19,7 @@ const login = async (req, res) => {
     }
 
     //verificar contraseña
-
+   
     const validPassword = bcrypt.compareSync(password,usuarioDB.password);
 
     if(!validPassword){
@@ -99,9 +99,23 @@ try {
     message:'Token no valido'
   })
 }
- 
+
 }
+
+ 
+const renewToken = async (req, res) => {
+  const uid = req.uid;
+  //generar elJWT
+  const token = await generarJWT(uid);
+  res.json({
+    ok: true,
+    uid,
+    token,
+  });
+};
+
 module.exports = {
   login,
- googleSingIn
+  googleSingIn,
+  renewToken,
 };

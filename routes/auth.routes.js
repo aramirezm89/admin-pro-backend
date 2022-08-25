@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { login, googleSingIn } = require("../controllers/auth.controller");
+const { login, googleSingIn, renewToken } = require("../controllers/auth.controller");
 const { validarCampos } = require("../middlewares/validarCampos");
+const { validarJWT } = require("../middlewares/validar-jwt");
 
 const router = Router();
 
@@ -27,5 +28,8 @@ router.post(
 
   googleSingIn
 );
+
+router.get('/renew',[validarJWT],renewToken)
+
 
 module.exports = router;
