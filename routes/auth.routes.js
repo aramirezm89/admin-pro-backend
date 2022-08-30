@@ -10,7 +10,7 @@ router.post(
   "/login",
   [
     check("email", "El email es obligatorio").isEmail(),
-    check("password", "El password es obligatorio").notEmpty(),
+    check("password", "El password es obligatorio, minimo 6 caracteres máximo 20").notEmpty().isLength({min:6,max:20}),
     validarCampos,
   ],
 

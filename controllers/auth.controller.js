@@ -37,6 +37,7 @@ const login = async (req, res) => {
     return res.status(200).json({
         ok:true,
         message:'Bienvenido',
+        nombre:usuarioDB.nombre,
         token
 
     })

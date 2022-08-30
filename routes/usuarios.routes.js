@@ -21,7 +21,7 @@ router.post(
   [
     check("nombre", "Campo nombre es requerido").notEmpty(),
     check("email", "Campo email es requerido").isEmail(),
-    check("password", "Campo password es requerido").notEmpty(),
+    check("password", "Campo password es requerido, minimo 6 caracteres, máximo 20").notEmpty().isLength({min:6,max:20}),
     validarCampos,
   ],
   crearUsuario
