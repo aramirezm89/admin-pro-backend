@@ -19,13 +19,14 @@ const login = async (req, res) => {
     }
 
     //verificar contraseña
-   
+  
     const validPassword = bcrypt.compareSync(password,usuarioDB.password);
 
     if(!validPassword){
           return res.status(400).json({
             ok: true,
             message:'credenciales de usuario no validas',
+            
           });
     }
 
@@ -35,12 +36,11 @@ const login = async (req, res) => {
     const token = await generarJWT(usuarioDB.id,usuarioDB.nombre,usuarioDB.email)
 
     return res.status(200).json({
-        ok:true,
-        message:'Bienvenido',
-        nombre:usuarioDB.nombre,
-        token
-
-    })
+      ok: true,
+      message: "Bienvenido",
+      nombre: usuarioDB.nombre,
+      token,
+    });
 
 
   } catch (error) {
@@ -107,11 +107,15 @@ try {
 const renewToken = async (req, res) => {
   const uid = req.uid;
   //generar elJWT
+  const usuario = await Usuario.findById(uid);
+
+  console.log(usuario)
   const token = await generarJWT(uid);
   res.json({
     ok: true,
     uid,
     token,
+    usuario
   });
 };
 
