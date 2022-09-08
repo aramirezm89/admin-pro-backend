@@ -32,7 +32,7 @@ router.put(
   [
     validarJWT,
     check("nombre", "Campo nombre es requerido").notEmpty(),
-    check("email", "Campo email es requerido").isEmail(),
+    check("email", "Email no valido").isEmail(),
     check("role", "Campo rol requerido").notEmpty(),
     validarCampos,
 

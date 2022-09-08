@@ -38,7 +38,7 @@ const fileUpload = (req, res) => {
   if (!extensionesValidas.includes(extension)) {
     return res.status(400).json({
       ok: false,
-      message: "La estension del archivo debe ser png, jpg, jpeeg, o gif",
+      message: "La estension del archivo debe ser png, jpg, jpeg, o gif",
     });
   }
 
