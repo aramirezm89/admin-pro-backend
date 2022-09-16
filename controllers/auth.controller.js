@@ -79,7 +79,7 @@ try {
    }else{
     usuario = usuarioDB;
     usuario.google = true;
-
+    
    }
 
    //guardar usuario

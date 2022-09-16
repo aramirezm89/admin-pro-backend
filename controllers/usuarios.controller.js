@@ -48,7 +48,6 @@ const getUsuarios = async (req, res) => {
 };
 
 const crearUsuario = async (req, res) => {
-  //atrapo los errores que provengan del midleware check() implementado en la ruta (usuarios.routes.js)
 
   const { email, password } = req.body;
 
