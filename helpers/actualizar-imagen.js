@@ -39,7 +39,7 @@ const actualizarImagen = async (tipo, id, nombreArchivo) => {
         
         const hospital = await Hospital.findById(id); //busca el documento en la colecciond de medicos segun la id
 
-        //validacion si el medico existe
+        //validacion si el hospital existe
         if(!hospital){
             console.log('hospital no existe')
             return false;
@@ -59,7 +59,7 @@ const actualizarImagen = async (tipo, id, nombreArchivo) => {
 
       const usuario = await Usuario.findById(id); //busca el documento en la colecciond de medicos segun la id
 
-      //validacion si el medico existe
+      //validacion si el usuario existe
       if (!usuario) {
         console.log("Usuario no existe");
         return false;

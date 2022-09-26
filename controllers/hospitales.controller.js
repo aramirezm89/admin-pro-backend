@@ -1,18 +1,28 @@
 const Hospital = require("../models/hospital");
 
 const getHospitales = async (req, res) => {
-  try {
-    const hospitalesDB = await Hospital.find()
-      .sort({
-        nombre: 1,
-      })
-      .populate("usuario", "nombre email img");
+  const desde = Number(req.query.desde) || 0;
 
-    res.json({
-      ok: true,
-      message: "Listado de hospitales",
-      hospitalesDB,
-    });
+  try {
+    const [hospitales, totalRegistros] = await Promise.all([
+      await Hospital.find()
+        .sort({
+          nombre: 1,
+        })
+        .populate("usuario", "nombre email img")
+        .skip(desde)
+        .limit(5),
+
+      Hospital.count(),
+    ]);
+
+   if(hospitales){
+     res.json({
+       ok: true,
+       hospitales,
+       totalRegistros
+     });
+   }
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -61,7 +71,7 @@ const actualizarHospital = async (req, res) => {
         message: "Hospital no encontrado",
       });
     }
-   
+
     hospitalDB.nombre = nombre.toLowerCase();
     hospitalDB.usuario = uid;
 
@@ -88,32 +98,30 @@ const actualizarHospital = async (req, res) => {
 };
 
 const borrarHospital = async (req, res) => {
+  const idHospital = req.params.id;
 
-  const idHospital = req.params.id
-
-try {
-
+  try {
     const hospitalDB = await Hospital.findById(idHospital);
 
-    if(!hospitalDB){
+    if (!hospitalDB) {
       return res.status(404).send({
-        ok:false,
-        message:'Hospital no encontrado'
-      })
+        ok: false,
+        message: "Hospital no encontrado",
+      });
     }
-   await Hospital.findByIdAndDelete(idHospital);
+    await Hospital.findByIdAndDelete(idHospital);
 
-   return res.json({
-    ok:true,
-    message:'Hospital eliminado'
-   })
-} catch (error) {
-  console.log(error);
-  res.status(500).json({
-    ok:false,
-    message:'Error inesperado'
-  })
-}
+    return res.json({
+      ok: true,
+      message: "Hospital eliminado",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      message: "Error inesperado",
+    });
+  }
 
   res.json({
     ok: true,

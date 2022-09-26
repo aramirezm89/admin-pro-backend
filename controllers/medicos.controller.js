@@ -21,6 +21,30 @@ const getMedicos = async (req, res) => {
   }
 };
 
+
+const getMedicoId = async (req, res) =>{
+  const id = req.params.id;
+
+  try {
+    const medicoBD = await Medico.findById(id)
+      .sort({ nombre: 1 })
+      .populate("usuario", "nombre email img")
+      .populate("hospital", "nombre");
+  if(!medicoBD){
+    return res.status(400).json({
+      ok:false,
+      message:'Médico no existe'
+    })
+  }
+
+  return res.json({
+    ok:true,
+    medico:medicoBD
+  })
+  } catch (error) {
+    
+  }
+}
 const crearMedico = async (req, res) => {
   const uid = req.uid; //uid proviene del middleware implementado en routes validarJWT
   const {nombre} = req.body;
@@ -117,6 +141,7 @@ const borrarMedico = async (req, res) => {
 
 module.exports = {
     getMedicos,
+    getMedicoId,
     crearMedico,
     actualizarMedico,
     borrarMedico

@@ -24,7 +24,7 @@ const getUsuarios = async (req, res) => {
 
     const [usuarios,totalRegistros] =  await Promise.all([
        
-       Usuario.find({}, "nombre email role google img")
+       Usuario.find({},"nombre email role google img")
           .sort({
             nombre: 1,
           })
