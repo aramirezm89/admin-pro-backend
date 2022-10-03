@@ -1,16 +1,21 @@
 const Medico = require('../models/medicos')
 
 const getMedicos = async (req, res) => {
-  
+  const desde = Number(req.query.desde) || 0;
   try {
-    const medicosDB = await Medico.find()
+    const [medicos,totalRegistro] = await Promise.all([
+       await Medico.find()
       .sort({ nombre: 1 })
-      .populate("usuario", "nombre email img").populate('hospital','nombre');
-
+      .populate("usuario", "nombre email img").populate('hospital','nombre')
+      .skip(desde)
+      .limit(5),
+      Medico.count()
+    ])
     res.json({
       ok: true,
       message: "Listado de medicos",
-      medicos:medicosDB
+      medicos,
+      totalRegistro
     });
   } catch (error) {
     console.log(error);
