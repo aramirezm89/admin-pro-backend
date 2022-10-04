@@ -89,7 +89,7 @@ try {
 
    //generar elJWT
 
-   const token = await generarJWT(usuario.id);
+   const token = await generarJWT(usuario.id,usuario.nombre,usuario.email);
    res.json({
      ok: true,
      email,
@@ -111,11 +111,14 @@ try {
  
 const renewToken = async (req, res) => {
   const uid = req.uid;
+  const nombre = req.nombre;
+  const email = req.email;
   //generar elJWT
+
   const usuario = await Usuario.findById(uid);
 
   console.log(usuario)
-  const token = await generarJWT(uid);
+  const token = await generarJWT(uid,nombre,email);
   res.json({
     ok: true,
     uid,

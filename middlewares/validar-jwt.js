@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 const Usuario = require("../models/usuario");
+
+
+
 const validarJWT = (req, res, next) => {
   //recupero el valor del token que viene en el header de la request mediante el nombre del header
   const token = req.header("x-token");
@@ -25,7 +28,8 @@ const validarJWT = (req, res, next) => {
     //pasar proiedades del payload del token a la request
 
     req.uid = uid;
-    (req.nombre = nombre), (req.email = email);
+    req.nombre = nombre;
+    req.email = email;
 
     next();
   } catch (error) {
