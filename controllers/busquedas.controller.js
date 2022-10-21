@@ -27,33 +27,35 @@ const getDocumentosColeccion = async (req, res) => {
   const query = req.params.query;
 
   let data = [];
-  let totalRegistros = 0
+  let totalRegistros = 0;
   let registros = [];
 
   switch (tabla) {
     /*regex se usa para filtrar el nombre segun el query que llegue y el parametro options:'i' significa que no
-    se va a distinguir entre mayusculas o minusculas "Case insensitivity "
+    se va a distinguir entre mayusculas o minusculas "Case insensitive "
   */
     case "medicos":
       data = await Medico.find({
         nombre: { $regex: query, $options: "i" },
       }).populate("hospital", "nombre img");
-       registros = data.length;
+      registros = data.length;
       totalRegistros = await Medico.count();
       break;
+
     case "hospitales":
       data = await Hospital.find({
         nombre: { $regex: query, $options: "i" },
       }).populate("usuario", "nombre img");
-       registros = data.length;
+      registros = data.length;
       totalRegistros = await Hospital.count();
       break;
 
     case "usuarios":
       data = await Usuario.find({ nombre: { $regex: query, $options: "i" } });
-       registros = data.length;
+      registros = data.length;
       totalRegistros = await Usuario.count();
       break;
+      
     default:
       return res.status(400).json({
         ok: false,
@@ -61,13 +63,13 @@ const getDocumentosColeccion = async (req, res) => {
       });
   }
 
-   res.json({
-    ok:true,
-    resultados : data,
+  res.json({
+    ok: true,
+    resultados: data,
     totalRegistros,
     registros,
-    coleccion : tabla,
-   })
+    coleccion: tabla,
+  });
 };
 
 module.exports = {
